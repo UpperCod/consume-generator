@@ -1,8 +1,8 @@
 {
-    "name": "pkg_name",
+    "name": "@uppercod/consume-generator",
     "type": "module",
-    "version": "0.0.0",
-    "description": "Capture text fragments based on regular expressions that are executed for each line of the text",
+    "version": "1.0.0",
+    "description": "Recursive and asynchronous function that explores return values of promises and generators",
     "main": "./module.cjs",
     "module": "./src/module.js",
     "types": "./module.d.ts",
@@ -24,14 +24,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/UpperCod/pkg_name.git"
+        "url": "git+https://github.com/UpperCod/consume-generator.git"
     },
     "author": "UpperCod",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/UpperCod/pkg_name/issues"
+        "url": "https://github.com/UpperCod/consume-generator/issues"
     },
-    "homepage": "https://github.com/UpperCod/pkg_name#readme",
+    "homepage": "https://github.com/UpperCod/consume-generator#readme",
     "devDependencies": {
         "ava": "^3.10.1",
         "rollup": "^2.21.0",
