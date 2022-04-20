@@ -12,9 +12,10 @@ export function consumer(value, payload, context, taskRoot) {
         taskRoot = taskRoot || task;
         if (typeof value == "function") {
             return consumer(
-                value(context.get(), payload, taskRoot),
+                value(context.get(), payload),
                 null,
-                context
+                context,
+                taskRoot
             );
         }
         if (
