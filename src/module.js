@@ -3,11 +3,13 @@
  * @template T
  * @param {*} value - value can be any value, but the only ones that will be consumed by set are promises, functions and generators
  * @param {*} payload - argument to use to execute the function
- * @param {{set(state:T):void,get():T}} context - argument to use to execute the function
+ * @param {{set(state:T):void,get():T,next(value:any):boolean}} context - argument to use to execute the function
+ * @param {Promise<any>} [taskRoot] - argument to use to execute the function
  * @returns {Promise<T>}
  */
-export function consumer(value, payload, context) {
-    return Promise.resolve(value).then((value) => {
+export function consumer(value, payload, context, taskRoot) {
+    const task = Promise.resolve(value).then((value) => {
+        taskRoot = task || taskRoot;
         if (typeof value == "function") {
             return consumer(value(context.get(), payload), null, context);
         }
@@ -18,17 +20,25 @@ export function consumer(value, payload, context) {
         ) {
             return new Promise((resolve) => {
                 function scan(generator) {
-                    Promise.resolve(generator.next(context.get())).then(
-                        ({ value, done }) =>
-                            consumer(value, null, context).then(() => {
-                                done ? resolve(context.get()) : scan(generator);
-                            })
-                    );
+                    if (context.next(taskRoot)) {
+                        Promise.resolve(generator.next(context.get())).then(
+                            ({ value, done }) =>
+                                consumer(value, null, context).then(() => {
+                                    done
+                                        ? resolve(context.get())
+                                        : scan(generator);
+                                })
+                        );
+                    }
                 }
                 scan(value);
             });
         }
-        context.set(value);
+        if (context.next(taskRoot)) {
+            context.set(value);
+        }
         return context.get();
     });
+
+    return task;
 }

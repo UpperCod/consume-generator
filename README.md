@@ -31,6 +31,9 @@ function* count() {
 }
 
 consumer(count, 20, {
+    next(task){
+        return true;
+    }
     set(value) {
         console.log(value);
         this.state = value;

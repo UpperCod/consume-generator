@@ -1,7 +1,7 @@
 {
     "name": "@uppercod/consume-generator",
     "type": "module",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Recursive and asynchronous function that explores return values of promises and generators",
     "main": "./module.cjs",
     "module": "./src/module.js",

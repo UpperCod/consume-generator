@@ -19,6 +19,9 @@ test("consumer", async (t) => {
     }
 
     await consumer(count, 20, {
+        next() {
+            return true;
+        },
         set(value) {
             t.is(value, values.shift());
             this.state = value;
