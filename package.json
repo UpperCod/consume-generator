@@ -1,7 +1,7 @@
 {
     "name": "@uppercod/consume-generator",
     "type": "module",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Recursive and asynchronous function that explores return values of promises and generators",
     "main": "./module.cjs",
     "module": "./src/module.js",
@@ -24,14 +24,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/UpperCod/consume-generator.git"
+        "url": "git+https://github.com/uppercod-npm/consume-generator.git"
     },
     "author": "UpperCod",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/UpperCod/consume-generator/issues"
+        "url": "https://github.com/uppercod-npm/consume-generator/issues"
     },
-    "homepage": "https://github.com/UpperCod/consume-generator#readme",
+    "homepage": "https://github.com/uppercod-npm/consume-generator#readme",
     "devDependencies": {
         "ava": "^3.10.1",
         "rollup": "^2.21.0",
