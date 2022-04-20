@@ -9,9 +9,13 @@
  */
 export function consumer(value, payload, context, taskRoot) {
     const task = Promise.resolve(value).then((value) => {
-        taskRoot = task || taskRoot;
+        taskRoot = taskRoot || task;
         if (typeof value == "function") {
-            return consumer(value(context.get(), payload), null, context);
+            return consumer(
+                value(context.get(), payload, taskRoot),
+                null,
+                context
+            );
         }
         if (
             value &&
@@ -23,11 +27,13 @@ export function consumer(value, payload, context, taskRoot) {
                     if (context.next(taskRoot)) {
                         Promise.resolve(generator.next(context.get())).then(
                             ({ value, done }) =>
-                                consumer(value, null, context).then(() => {
-                                    done
-                                        ? resolve(context.get())
-                                        : scan(generator);
-                                })
+                                consumer(value, null, context, taskRoot).then(
+                                    () => {
+                                        done
+                                            ? resolve(context.get())
+                                            : scan(generator);
+                                    }
+                                )
                         );
                     }
                 }
