@@ -1,4 +1,4 @@
-class Cycle extends Promise {
+export class Cycle extends Promise {
     isExpire = false;
     expire = () => (this.isExpire = true);
 }
