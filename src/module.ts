@@ -23,7 +23,7 @@ export function consumer<T = any>(
     value: any,
     payload: T | undefined,
     context: { set(state: T): void; get(): T },
-    taskRoot: Cycle<T>
+    taskRoot?: Cycle<T>
 ) {
     const task = Cycle.resolve(value).then((value) => {
         taskRoot = taskRoot || task;
