@@ -8,7 +8,7 @@
     },
     "scripts": {
         "test": "ava",
-        "exports": "exports ./src/module.ts --types --exports --main module",
+        "exports": "exports ./src/module.js --types --exports --main module",
         "prepublishOnly": "npm run test && npm run exports"
     },
     "repository": {
