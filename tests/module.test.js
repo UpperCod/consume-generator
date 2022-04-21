@@ -1,5 +1,6 @@
-import test from "ava";
-import { consumer } from "../src/module.js";
+import { test } from "uvu";
+import * as assert from "uvu/assert";
+import { consumer } from "../src/module";
 
 test("consumer", async (t) => {
     const values = [1, 2, 3, 4.1, 4.2, 4.3, 4.4, 4.5, 5];
@@ -14,12 +15,12 @@ test("consumer", async (t) => {
             yield 4.4;
             return 4.5;
         };
-        return new Promise((resolve) => setTimeout(resolve, 1000, 5));
+        return new Promise((resolve) => setTimeout(resolve, 100, 5));
     }
 
     const task = consumer(count, 20, {
         set(value) {
-            t.is(value, values.shift());
+            assert.is(value, values.shift());
             this.state = value;
         },
         get() {
@@ -29,9 +30,8 @@ test("consumer", async (t) => {
 
     const value = await task;
 
-    t.is(value, 5);
-
-    t.is(values.length, 0);
+    assert.is(value, 5);
+    assert.is(values.length, 0);
 });
 
 test("loop", async (t) => {
@@ -44,7 +44,6 @@ test("loop", async (t) => {
     const context = {
         state: { count: 0 },
         set(value) {
-            console.log(value);
             this.state = value;
         },
         get() {
@@ -58,5 +57,8 @@ test("loop", async (t) => {
 
     task.expire();
 
-    t.deepEqual(context.state, { count: 5 });
+    assert.is(JSON.stringify(context.state), JSON.stringify({ count: 5 }));
+    assert.is();
 });
+
+test.run();
