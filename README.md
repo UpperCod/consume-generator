@@ -30,10 +30,7 @@ function* count() {
     return new Promise((resolve) => setTimeout(resolve, 1000, 5));
 }
 
-consumer(count, 20, {
-    next(task){
-        return true;
-    }
+const task = consumer(count, 20, {
     set(value) {
         console.log(value);
         this.state = value;
@@ -41,7 +38,13 @@ consumer(count, 20, {
     get() {
         return this.state;
     },
-}).then((value) => {
+});
+
+task.then((value) => {
     console.log(value); // 5
 });
+
+setTimeout(() => {
+    task.expire();
+}, 100);
 ```

@@ -3,24 +3,13 @@
     "type": "module",
     "version": "1.2.2",
     "description": "Recursive and asynchronous function that explores return values of promises and generators",
-    "main": "./module.cjs",
-    "module": "./src/module.js",
-    "types": "./module.d.ts",
-    "exports": {
-        ".": {
-            "import": "./src/module.js",
-            "require": "./module.cjs"
-        }
-    },
     "publishConfig": {
         "access": "public"
     },
     "scripts": {
-        "types": "tsc",
-        "build": "rollup -c",
-        "dev": "rollup -c -w",
         "test": "ava",
-        "prepublishOnly": "npm run test && npm run build && npm run types"
+        "exports": "exports ./src/module.ts --types --exports --main module",
+        "prepublishOnly": "npm run test && npm run exports"
     },
     "repository": {
         "type": "git",
@@ -34,8 +23,8 @@
     "homepage": "https://github.com/uppercod-npm/consume-generator#readme",
     "devDependencies": {
         "ava": "^3.10.1",
-        "rollup": "^2.21.0",
-        "typescript": "^4.2.4"
+        "typescript": "^4.6.3",
+        "@atomico/exports": "^0.27.0"
     },
     "ava": {
         "files": [

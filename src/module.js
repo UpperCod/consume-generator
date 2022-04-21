@@ -1,14 +1,19 @@
+class Cycle extends Promise {
+    isExpire = false;
+    expire = () => (this.isExpire = true);
+}
+
 /**
  * Recursive asynchronous function capable of consuming functions, promises and generators for state exploration and definition
  * @template T
  * @param {*} value - value can be any value, but the only ones that will be consumed by set are promises, functions and generators
  * @param {*} payload - argument to use to execute the function
  * @param {{set(state:T):void,get():T,next(value:any):boolean}} context - argument to use to execute the function
- * @param {Promise<any>} [taskRoot] - argument to use to execute the function
- * @returns {Promise<T>}
+ * @param {Cycle<any>} [taskRoot] - argument to use to execute the function
+ * @returns {Cycle<T>}
  */
 export function consumer(value, payload, context, taskRoot) {
-    const task = Promise.resolve(value).then((value) => {
+    const task = Cycle.resolve(value).then((value) => {
         taskRoot = taskRoot || task;
         if (typeof value == "function") {
             return consumer(
@@ -18,32 +23,28 @@ export function consumer(value, payload, context, taskRoot) {
                 taskRoot
             );
         }
+
         if (
             value &&
             typeof value == "object" &&
             typeof value.next == "function"
         ) {
-            return new Promise((resolve) => {
-                function scan(generator) {
-                    if (context.next(taskRoot)) {
-                        Promise.resolve(generator.next(context.get())).then(
-                            ({ value, done }) =>
-                                consumer(value, null, context, taskRoot).then(
-                                    () => {
-                                        done
-                                            ? resolve(context.get())
-                                            : scan(generator);
-                                    }
-                                )
+            return new Cycle((resolve) => {
+                async function scan(generator) {
+                    if (!taskRoot.isExpire) {
+                        const { value, done } = await generator.next(
+                            context.get()
                         );
+                        await consumer(value, null, context, taskRoot);
+                        done ? resolve(context.get()) : scan(generator);
                     }
                 }
                 scan(value);
             });
         }
-        if (context.next(taskRoot)) {
-            context.set(value);
-        }
+
+        if (!taskRoot.isExpire) context.set(value);
+
         return context.get();
     });
 

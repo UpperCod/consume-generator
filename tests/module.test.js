@@ -18,8 +18,6 @@ test("consumer", async (t) => {
         return new Promise((resolve) => setTimeout(resolve, 1000, 5));
     }
 
-    const p = Promise.resolve();
-
     const task = consumer(count, 20, {
         next(taskId) {
             return queue.has(taskId);
