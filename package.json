@@ -1,7 +1,7 @@
 {
     "name": "@uppercod/consume-generator",
     "type": "module",
-    "version": "1.2.2",
+    "version": "1.3.0",
     "description": "Recursive and asynchronous function that explores return values of promises and generators",
     "publishConfig": {
         "access": "public"
