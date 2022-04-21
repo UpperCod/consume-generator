@@ -8,7 +8,7 @@ export class Cycle extends Promise {
  * @template T
  * @param {*} value - value can be any value, but the only ones that will be consumed by set are promises, functions and generators
  * @param {*} payload - argument to use to execute the function
- * @param {{set(state:T):void,get():T,next(value:any):boolean}} context - argument to use to execute the function
+ * @param {{set(state:T):void,get():T}} context - argument to use to execute the function
  * @param {Cycle} [taskRoot] - argument to use to execute the function
  * @returns {Cycle}
  */
